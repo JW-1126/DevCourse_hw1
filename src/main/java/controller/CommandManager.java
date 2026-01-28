@@ -1,16 +1,17 @@
-package service;
+package controller;
 
 import java.util.Map;
-import service.orders.Command;
+import service.domain.Process;
 
 public class CommandManager {
-    private final Map<String, Command> orders;
+    private final Map<CommandRegistry, Process> orders;
 
-    public CommandManager(Map<String, Command> orders) {
+    public CommandManager(Map<CommandRegistry, Process> orders) {
         this.orders = orders;
     }
 
-    public void execute(String command) {
-        String[] commands = command.split("?");
+    public void execute(CommandInfo command) {
+        Process process = orders.get(command.commandRegistry());
+        process.process(command.index());
     }
 }
