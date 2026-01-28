@@ -1,6 +1,6 @@
 package service.orders;
 
-public class Delete implements Order {
+public class Delete implements Command {
     @Override
     public void process() {
         /*

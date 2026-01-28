@@ -1,6 +1,6 @@
 package service.orders;
 
-public class Create implements Order {
+public class Create implements Command {
     @Override
     public void process() {
         /*
