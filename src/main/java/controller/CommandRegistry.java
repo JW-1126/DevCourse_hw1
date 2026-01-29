@@ -8,6 +8,7 @@ public enum CommandRegistry {
     DELETE("삭제"),
     UPDATE("수정"),
     READ("목록"),
+    BUILD("빌드"),
     CLOSE("종료");
 
     private final String inputMessage;

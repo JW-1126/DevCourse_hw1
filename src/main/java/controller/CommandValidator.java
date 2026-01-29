@@ -9,8 +9,13 @@ public class CommandValidator {
         }
 
         String[] split = input.split("\\?");
-        if (!supports(split[0])) {
+        String command = split[0];
+        if (!supports(command)) {
             throw new InputMismatchException("지원하지 않는 명령어입니다.");
+        }
+
+        if ((command.equals("삭제") || command.equals("수정")) && split.length == 1) {
+            throw new InputMismatchException("삭제/수정 명령은 대상 id값 또한 입력해야합니다.");
         }
     }
 
