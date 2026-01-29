@@ -1,9 +1,11 @@
-package service.orders;
+package service.domain;
 
-public class Close implements Command {
+import static view.Output.printEnd;
+
+public class Close implements Process {
     @Override
-    public void process() {
-        System.out.println("프로그램을 종료합니다.");
+    public void process(Integer index) {
+        printEnd();
         System.exit(0);
     }
 }

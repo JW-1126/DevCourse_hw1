@@ -1,5 +1,5 @@
 package service.domain;
 
-public interface Command {
-    void process();
+public interface Process {
+    void process(Integer index);
 }

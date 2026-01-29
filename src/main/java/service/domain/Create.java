@@ -1,12 +1,27 @@
-package service.orders;
+package service.domain;
 
-public class Create implements Command {
+import static repository.Id.getLastId;
+import static view.Input.getAuthor;
+import static view.Input.getContent;
+import static view.Output.printResult;
+
+import repository.WiseSayingRepository;
+
+public class Create implements Process {
+    private final WiseSayingRepository wiseSayingRepository;
+    public static int id;
+
+    public Create(WiseSayingRepository wiseSayingRepository) {
+        this.wiseSayingRepository = wiseSayingRepository;
+        id = getLastId();
+    }
+
     @Override
-    public void process() {
-        /*
-         * 등록
-         * 명언과 작가를 각각 입력 ( 잘못된 입력값 처리 )
-         * json 파일로 저장 & 인덱스
-         */
+    public void process(Integer commandIndex) {
+        String content = getContent();
+        String author = getAuthor();
+
+        wiseSayingRepository.add(id, content, author);
+        printResult(id++, "등록");
     }
 }
