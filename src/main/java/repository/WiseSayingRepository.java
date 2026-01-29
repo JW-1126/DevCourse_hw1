@@ -1,4 +1,77 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
+import service.domain.WiseSaying;
+
 public class WiseSayingRepository {
+    private final List<WiseSaying> wiseSayingList;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Path FILEPATH = Path.of("file/data.json");
+
+    public WiseSayingRepository() {
+        wiseSayingList = loadRepo();
+    }
+
+    public List<String> readAll() {
+        Comparator<WiseSaying> c = Comparator.comparingInt(WiseSaying::id);
+        Comparator<WiseSaying> reverse = c.reversed();
+
+        return wiseSayingList.stream()
+                .sorted(reverse)
+                .map(WiseSaying::toString)
+                .toList();
+    }
+
+    public void add(int index, String content, String author) {
+        wiseSayingList.add(WiseSaying.create(index, content, author));
+    }
+
+    public void delete(int index) {
+        wiseSayingList.remove(checkAndGetWise(index));
+    }
+
+    public void modify(int index, String content, String author) {
+        for (int i = 0; i < wiseSayingList.size(); i++) {
+            WiseSaying wiseSaying = wiseSayingList.get(i);
+            if (wiseSaying.id() == index) {
+                wiseSayingList.set(i, WiseSaying.create(index, content, author));
+            }
+        }
+    }
+
+    public void build() {
+        try (OutputStream out = Files.newOutputStream(FILEPATH)) {
+            objectMapper.writeValue(out, wiseSayingList);
+        } catch (IOException e) {
+            throw new RuntimeException("저장 오류 발생. 재시도");
+        }
+    }
+
+    public WiseSaying checkAndGetWise(int index) {
+        return wiseSayingList.stream()
+                .filter(i -> i.isTarget(index))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(index + "번 명언은 존재하지 않습니다."));
+    }
+
+    private List<WiseSaying> loadRepo() {
+        try (InputStream in = Files.newInputStream(FILEPATH)) {
+            if (!Files.exists(FILEPATH) || Files.size(FILEPATH) == 0) {
+                Files.writeString(FILEPATH, "[]");
+                return List.of();
+            }
+            return objectMapper.readValue(in, new TypeReference<List<WiseSaying>>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
