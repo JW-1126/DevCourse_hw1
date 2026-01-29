@@ -3,12 +3,11 @@ package view;
 import controller.Controller;
 import java.util.Scanner;
 
-public class InputView {
-    private final Scanner scanner;
+public class Input {
+    private static final Scanner scanner = new Scanner(System.in);
     private final Controller controller;
 
-    public InputView(Scanner scanner, Controller controller) {
-        this.scanner = scanner;
+    public Input(Controller controller) {
         this.controller = controller;
     }
 
@@ -16,7 +15,19 @@ public class InputView {
         System.out.println("== 명언 앱 ==");
         while (true) {
             System.out.print("명령) ");
-            controller.work(scanner.nextLine());
+            controller.work(scanner.nextLine().trim());
         }
     }
+
+    public static String getContent() {
+        System.out.print("명언 : ");
+        return scanner.nextLine().trim();
+    }
+
+    public static String getAuthor() {
+        System.out.print("작가 : ");
+        return scanner.nextLine().trim();
+    }
+
+
 }
