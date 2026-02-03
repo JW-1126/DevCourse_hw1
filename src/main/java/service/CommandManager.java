@@ -14,16 +14,16 @@ import repository.WiseSayingRepository;
 import service.domain.WiseSaying;
 import view.Output;
 
-public class OrderManager {
+public class CommandManager {
     private final WiseSayingRepository wiseSayingRepository;
     private static int id;
 
-    public OrderManager(WiseSayingRepository wiseSayingRepository) {
+    public CommandManager(WiseSayingRepository wiseSayingRepository) {
         this.wiseSayingRepository = wiseSayingRepository;
         id = getLastId();
     }
 
-    @CommandType(CommandRegistry.CREATE)
+    @CommandMapping(CommandRegistry.CREATE)
     public void create() {
         String content = getContent();
         String author = getAuthor();
@@ -32,14 +32,14 @@ public class OrderManager {
         printResult(id++, "등록");
     }
 
-    @CommandType(CommandRegistry.READ)
+    @CommandMapping(CommandRegistry.READ)
     public void read() {
         printReadHeader();
         wiseSayingRepository.readAll()
                 .forEach(Output::printContent);
     }
 
-    @CommandType(CommandRegistry.UPDATE)
+    @CommandMapping(CommandRegistry.UPDATE)
     public void update(int index) {
         WiseSaying values = wiseSayingRepository.checkAndGetWise(index);
 
@@ -52,21 +52,22 @@ public class OrderManager {
         wiseSayingRepository.modify(index, newContent, newAuthor);
     }
 
-    @CommandType(CommandRegistry.DELETE)
+    @CommandMapping(CommandRegistry.DELETE)
     public void delete(int index) {
         wiseSayingRepository.delete(index);
         printResult(index, "삭제");
     }
 
-    @CommandType(CommandRegistry.CLOSE)
-    public void close() {
-        printEnd();
-        System.exit(0);
-    }
-
-    @CommandType(CommandRegistry.BUILD)
+    @CommandMapping(CommandRegistry.BUILD)
     public void build() {
         wiseSayingRepository.build();
         writeLastId(id);
+    }
+
+    @CommandMapping(CommandRegistry.CLOSE)
+    public void close() {
+        build();
+        printEnd();
+        System.exit(0);
     }
 }
