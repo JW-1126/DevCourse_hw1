@@ -35,6 +35,7 @@ public class WiseSayingRepository {
     }
 
     public void delete(int index) {
+        // removeIf method 존재 refactoring 가능
         wiseSayingList.remove(checkAndGetWise(index));
     }
 
@@ -68,7 +69,7 @@ public class WiseSayingRepository {
                 Files.writeString(FILEPATH, "[]");
                 return List.of();
             }
-            return objectMapper.readValue(in, new TypeReference<List<WiseSaying>>() {
+            return objectMapper.readValue(in, new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new RuntimeException(e);

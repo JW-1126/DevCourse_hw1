@@ -6,7 +6,7 @@ public class Output {
         System.out.println("프로그램을 종료합니다.");
     }
 
-    public static void printError(RuntimeException e) {
+    public static void printError(Exception e) {
         System.out.println(e.getMessage());
     }
 
