@@ -1,4 +1,4 @@
-package service.domain;
+package domain;
 
 import java.util.InputMismatchException;
 

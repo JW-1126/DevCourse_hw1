@@ -1,4 +1,4 @@
-package service;
+package controller;
 
 import static repository.Id.getLastId;
 import static repository.Id.writeLastId;
@@ -9,16 +9,25 @@ import static view.Output.printEnd;
 import static view.Output.printReadHeader;
 import static view.Output.printResult;
 
-import controller.CommandRegistry;
+import domain.WiseSaying;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import repository.WiseSayingRepository;
-import service.domain.WiseSaying;
 import view.Output;
 
-public class CommandManager {
+public class CommandController {
     private final WiseSayingRepository wiseSayingRepository;
     private static int id;
 
-    public CommandManager(WiseSayingRepository wiseSayingRepository) {
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    public @interface CommandMapping {
+        CommandRegistry value();
+    }
+
+    public CommandController(WiseSayingRepository wiseSayingRepository) {
         this.wiseSayingRepository = wiseSayingRepository;
         id = getLastId();
     }

@@ -3,28 +3,27 @@ package controller;
 import static controller.CommandValidator.validateInput;
 import static view.Output.printError;
 
+import controller.CommandController.CommandMapping;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import service.CommandManager;
-import service.CommandMapping;
 
-public class Controller {
+public class InputHandler {
 
-    private final CommandManager commandManager;
+    private final CommandController commandController;
     private final Map<CommandRegistry, Method> commandMap;
 
-    public Controller(CommandManager commandManager) {
-        this.commandManager = commandManager;
+    public InputHandler(CommandController commandController) {
+        this.commandController = commandController;
         this.commandMap = new HashMap<>();
         init();
     }
 
     public void work(String input) {
         try {
+            // 입력값 파싱 & 각 변수에 저장해서 활용
             validateInput(input);
-            // Annotation 기반 전환
             execute(input);
         } catch (InvocationTargetException e) {
             printError((Exception) e.getTargetException());
@@ -34,7 +33,7 @@ public class Controller {
     }
 
     private void init() {
-        Method[] methods = commandManager.getClass().getDeclaredMethods();
+        Method[] methods = commandController.getClass().getDeclaredMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(CommandMapping.class)) {
                 CommandRegistry inputCommand = method.getAnnotation(CommandMapping.class).value();
@@ -53,10 +52,10 @@ public class Controller {
             int args = Integer.parseInt(
                     input.split("\\?")[1].split("=")[1]
             );
-            method.invoke(commandManager, args);
+            method.invoke(commandController, args);
             return;
         }
 
-        method.invoke(commandManager);
+        method.invoke(commandController);
     }
 }

@@ -1,21 +1,21 @@
 package view;
 
-import controller.Controller;
+import controller.InputHandler;
 import java.util.Scanner;
 
 public class Input {
     private static final Scanner scanner = new Scanner(System.in);
-    private final Controller controller;
+    private final InputHandler inputHandler;
 
-    public Input(Controller controller) {
-        this.controller = controller;
+    public Input(InputHandler inputHandler) {
+        this.inputHandler = inputHandler;
     }
 
     public void mainConsole() {
         System.out.println("== 명언 앱 ==");
         while (true) {
             System.out.print("명령) ");
-            controller.work(scanner.nextLine().trim());
+            inputHandler.work(scanner.nextLine().trim());
         }
     }
 

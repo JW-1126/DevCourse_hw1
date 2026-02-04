@@ -1,8 +1,8 @@
 package config;
 
-import controller.Controller;
+import controller.CommandController;
+import controller.InputHandler;
 import repository.WiseSayingRepository;
-import service.CommandManager;
 import view.Input;
 
 public class AppConfig {
@@ -11,12 +11,12 @@ public class AppConfig {
         return new Input(controller());
     }
 
-    private Controller controller() {
-        return new Controller(commandManager());
+    private InputHandler controller() {
+        return new InputHandler(commandManager());
     }
 
-    private CommandManager commandManager() {
-        return new CommandManager(wiseSayingRepository());
+    private CommandController commandManager() {
+        return new CommandController(wiseSayingRepository());
     }
 
     private WiseSayingRepository wiseSayingRepository() {
