@@ -4,28 +4,12 @@
 - [x] 사용자 입력값에 대한 검증 및 예외 처리
     - 형식 및 명령어 유효성
     - 특수 기호 사용 여부
-- [x] MVC , Command 패턴
-    - 추상화 기반 Map -> annotaion & reflection 리팩토링
+- [x] MVC 패턴 고려 - 과제 진행에 맞추어 명령형으로 작성
 - [x] Tell, don't ask 고려
 
 ***
 
 ### 배운점
 
-- 파일 기반 작업 시 파일 폴더는 프로젝트 폴더 바로 하위에 위치
-- 파일 외부 자원에 대해 초기 상태 메서드 정의 (파일이 비어있을 경우 초기화, 생성 ...)
-- Optional<T> , Stream<T> 간의 체이닝 (ex. filter().findFirst().orElseThrow(~) )
-    - Comparator도 functional interface -> lambda가능 , 정적 메서드 파라미터로 Function ..
-- Jackson 라이브러리 , json
-    - @JsonCreator
-    - @JsonProperty
-    - json - record와 함께 사용
-- reflection을 통한 메서드 호출 시 컴파일 시점에는 발생할 에외를 알 수 없다
-    - InvocationTargetException 으로 감싸서 해결
-
-***
-
-### 리팩토링 요소
-
-- 입력값 파싱 유틸 메서드 분리
-- Enum 오버엔지니어링 가능성 고려 -> 불변 문자열 리스트 전환?
+- Controller : 사용자 상호작용 | 입력에 따른 Service 호출
+- Service : 비즈니스 로직 | 데이터의 전달 , 입출력 X

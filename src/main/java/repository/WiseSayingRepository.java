@@ -30,7 +30,7 @@ public class WiseSayingRepository {
                 .toList();
     }
 
-    public void add(int index, String content, String author) {
+    public void save(int index, String content, String author) {
         wiseSayingList.add(WiseSaying.create(index, content, author));
     }
 
