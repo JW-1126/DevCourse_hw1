@@ -4,8 +4,9 @@
 - [x] 사용자 입력값에 대한 검증 및 예외 처리
     - 형식 및 명령어 유효성
     - 특수 기호 사용 여부
-- [x] MVC , Command 패턴 적용 시도
-- [x] Tell, don't ask 많이 신경 씀
+- [x] MVC , Command 패턴
+    - 추상화 기반 Map -> annotaion & reflection 리팩토링
+- [x] Tell, don't ask 고려
 
 ***
 
@@ -19,7 +20,5 @@
     - @JsonCreator
     - @JsonProperty
     - json - record와 함께 사용
-
-### 리팩토링 요소
-
-- 커맨드 패턴 annotation 기반으로 발전
+- reflection을 통한 메서드 호출 시 컴파일 시점에는 발생할 에외를 알 수 없다
+    - InvocationTargetException 으로 감싸서 해결
