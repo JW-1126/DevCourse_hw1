@@ -1,7 +1,9 @@
 package domain;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public record InputCommand(String command, Map<String, String> queryParam) {
 
@@ -10,10 +12,18 @@ public record InputCommand(String command, Map<String, String> queryParam) {
 
         String[] command = input.split("\\?");
         if (command.length == 2) {
-            String[] params = command[1].split("&");
-            for (String param : params) {
-                queryParam.put(param.split("=")[0], param.split("=")[1]);
-            }
+            queryParam = Arrays.stream(command[1].split("&"))
+                    .map(p -> p.split("="))
+                    .collect(Collectors.toMap(
+                            p -> p[0],
+                            p -> p[1]
+                    ));
+            /*
+             *          String[] params = command[1].split("&");
+             *          for (String param : params) {
+             *              queryParam.put(param.split("=")[0], param.split("=")[1]);
+             *          }
+             */
         }
 
         return new InputCommand(command[0], queryParam);
