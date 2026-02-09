@@ -7,6 +7,8 @@ import dto.InputCommand;
 import dto.PageDto;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import service.CommandService;
 
 public class InputController {
@@ -59,13 +61,19 @@ public class InputController {
             System.out.println("-------------------------");
             // 페이지 정보 출력
             System.out.print("페이지 : ");
-            for (int i = 1; i <= pageDto.pageCount(); i++) {
+            String pageMenu = IntStream.rangeClosed(1, pageDto.pageCount())
+                    .mapToObj(i -> (i == pageDto.page() ? "[" + i + "]" : String.valueOf(i)))
+                    .collect(Collectors.joining(" / "));
+            System.out.println(pageMenu);
+            /*
+             for (int i = 1; i <= pageDto.pageCount(); i++) {
                 if (i == pageDto.page()) {
                     System.out.printf("[%d] | ", i);
                     continue;
                 }
                 System.out.printf("%d | ", i);
             }
+             */
             System.out.println();
         }
         if (command.command().equals("수정")) {
