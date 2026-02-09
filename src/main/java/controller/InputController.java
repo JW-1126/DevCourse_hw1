@@ -4,6 +4,7 @@ import static controller.CommandValidator.validateInput;
 
 import domain.InputCommand;
 import domain.WiseSaying;
+import java.util.Map;
 import java.util.Scanner;
 import service.CommandService;
 
@@ -40,9 +41,19 @@ public class InputController {
             System.out.printf("%d번 명언이 등록되었습니다.\n", id);
         }
         if (command.command().equals("목록")) {
+            Map<String, String> queryParam = command.queryParam();
+
+            if (!queryParam.isEmpty()) {
+                String type = queryParam.get("keywordType");
+                String keyword = queryParam.get("keyword");
+                System.out.println("-------------------------");
+                System.out.printf("검색타입 : %s\n검색어 : %s\n", type, keyword);
+                System.out.println("-------------------------");
+            }
+
             System.out.println("번호 / 작가 / 명언");
             System.out.println("-------------------------");
-            commandService.read().forEach(System.out::println);
+            commandService.read(queryParam).forEach(System.out::println);
         }
         if (command.command().equals("수정")) {
             WiseSaying values = commandService.getWiseInfo(command.getIdParam());

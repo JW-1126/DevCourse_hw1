@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 
 public record WiseSaying(int id, String content, String author) {
 
-    private static final String REGEX = "^[가-힣a-zA-Z]+$";
+    private static final String REGEX = "^[가-힣a-zA-Z .1-9]+$";
 
     public static WiseSaying create(int id, String content, String author) {
         validateInput(content, author);
@@ -18,6 +18,13 @@ public record WiseSaying(int id, String content, String author) {
 
     public boolean isTarget(int id) {
         return this.id == id;
+    }
+
+    public boolean isContains(String type, String keyword) {
+        if (type.equals("author")) {
+            return author.contains(keyword);
+        }
+        return content.contains(keyword);
     }
 
     private static void validateInput(String content, String author) {

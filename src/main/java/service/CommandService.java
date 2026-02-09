@@ -5,6 +5,7 @@ import static repository.Id.writeLastId;
 
 import domain.WiseSaying;
 import java.util.List;
+import java.util.Map;
 import repository.WiseSayingRepository;
 
 public class CommandService {
@@ -21,8 +22,12 @@ public class CommandService {
         return id++;
     }
 
-    public List<String> read() {
-        return wiseSayingRepository.readAll();
+    public List<String> read(Map<String, String> queryParam) {
+        if (queryParam.isEmpty()) {
+            return wiseSayingRepository.readAll();
+        }
+        return wiseSayingRepository
+                .readByKeyword(queryParam.get("keywordType"), queryParam.get("keyword"));
     }
 
     public WiseSaying getWiseInfo(int index) {

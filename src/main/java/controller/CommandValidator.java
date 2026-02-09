@@ -23,7 +23,8 @@ public class CommandValidator {
     }
 
     private static boolean patternValidate(String input) {
-        return input.matches("^[가-힣]{2}(?:\\?(?:id=\\d+|page=\\d+|keywordType=[a-zA-Z]+&keyword=[가-힣]+))?$");
+        return input.matches(
+                "^[가-힣]{2}(?:\\?(?:id=\\d+|page=\\d+|keywordType=(?:author|keyword)&keyword=[a-zA-Z가-힣0-9]+))?$");
     }
 
     private static void commandValidate(String input) {

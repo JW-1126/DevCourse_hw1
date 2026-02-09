@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
 
 public class WiseSayingRepository {
@@ -21,11 +20,14 @@ public class WiseSayingRepository {
     }
 
     public List<String> readAll() {
-        Comparator<WiseSaying> c = Comparator.comparingInt(WiseSaying::id);
-        Comparator<WiseSaying> reverse = c.reversed();
+        return wiseSayingList.reversed().stream()
+                .map(WiseSaying::toString)
+                .toList();
+    }
 
-        return wiseSayingList.stream()
-                .sorted(reverse)
+    public List<String> readByKeyword(String type, String keyword) {
+        return wiseSayingList.reversed().stream()
+                .filter(i -> i.isContains(type, keyword))
                 .map(WiseSaying::toString)
                 .toList();
     }
