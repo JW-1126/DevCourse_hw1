@@ -86,7 +86,7 @@ public class WiseSayingRepository {
                 .limit(PAGE_SIZE)
                 .map(WiseSaying::toString)
                 .toList();
-        int pageCount = filteredList.size() / PAGE_SIZE + (filteredList.size() % PAGE_SIZE == 0 ? 0 : 1);
+        int pageCount = (int) Math.ceil((double) filteredList.size() / PAGE_SIZE);
         return new PageDto(page, pageCount, pagedList);
     }
 }
