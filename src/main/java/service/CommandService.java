@@ -4,7 +4,7 @@ import static repository.Id.getLastId;
 import static repository.Id.writeLastId;
 
 import domain.WiseSaying;
-import java.util.List;
+import dto.PageDto;
 import java.util.Map;
 import repository.WiseSayingRepository;
 
@@ -22,12 +22,14 @@ public class CommandService {
         return id++;
     }
 
-    public List<String> read(Map<String, String> queryParam) {
-        if (queryParam.isEmpty()) {
-            return wiseSayingRepository.readAll();
+    public PageDto read(Map<String, String> queryParam) {
+        int page = Integer.parseInt(queryParam.getOrDefault("page", "1"));
+
+        if (queryParam.containsKey("keywordType")) {
+            return wiseSayingRepository
+                    .readByKeyword(queryParam.get("keywordType"), queryParam.get("keyword"), page);
         }
-        return wiseSayingRepository
-                .readByKeyword(queryParam.get("keywordType"), queryParam.get("keyword"));
+        return wiseSayingRepository.readAll(page);
     }
 
     public WiseSaying getWiseInfo(int index) {

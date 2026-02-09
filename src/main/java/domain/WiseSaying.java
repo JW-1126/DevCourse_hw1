@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 
 public record WiseSaying(int id, String content, String author) {
 
-    private static final String REGEX = "^[가-힣a-zA-Z .1-9]+$";
+    private static final String REGEX = "^[가-힣a-zA-Z .0-9]+$";
 
     public static WiseSaying create(int id, String content, String author) {
         validateInput(content, author);

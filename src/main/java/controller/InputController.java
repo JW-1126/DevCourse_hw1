@@ -2,8 +2,9 @@ package controller;
 
 import static controller.CommandValidator.validateInput;
 
-import domain.InputCommand;
 import domain.WiseSaying;
+import dto.InputCommand;
+import dto.PageDto;
 import java.util.Map;
 import java.util.Scanner;
 import service.CommandService;
@@ -43,7 +44,7 @@ public class InputController {
         if (command.command().equals("목록")) {
             Map<String, String> queryParam = command.queryParam();
 
-            if (!queryParam.isEmpty()) {
+            if (queryParam.containsKey("keywordType")) {
                 String type = queryParam.get("keywordType");
                 String keyword = queryParam.get("keyword");
                 System.out.println("-------------------------");
@@ -53,7 +54,19 @@ public class InputController {
 
             System.out.println("번호 / 작가 / 명언");
             System.out.println("-------------------------");
-            commandService.read(queryParam).forEach(System.out::println);
+            PageDto pageDto = commandService.read(queryParam);
+            pageDto.list().forEach(System.out::println);
+            System.out.println("-------------------------");
+            // 페이지 정보 출력
+            System.out.print("페이지 : ");
+            for (int i = 1; i <= pageDto.pageCount(); i++) {
+                if (i == pageDto.page()) {
+                    System.out.printf("[%d] | ", i);
+                    continue;
+                }
+                System.out.printf("%d | ", i);
+            }
+            System.out.println();
         }
         if (command.command().equals("수정")) {
             WiseSaying values = commandService.getWiseInfo(command.getIdParam());

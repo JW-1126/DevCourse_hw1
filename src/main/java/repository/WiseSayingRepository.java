@@ -3,6 +3,7 @@ package repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.WiseSaying;
+import dto.PageDto;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,6 +12,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class WiseSayingRepository {
+    public static final int PAGE_SIZE = 5;
     private final List<WiseSaying> wiseSayingList;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final Path FILEPATH = Path.of("file/data.json");
@@ -19,17 +21,17 @@ public class WiseSayingRepository {
         wiseSayingList = loadRepo();
     }
 
-    public List<String> readAll() {
-        return wiseSayingList.reversed().stream()
-                .map(WiseSaying::toString)
+    public PageDto readAll(int page) {
+        List<WiseSaying> list = wiseSayingList.reversed().stream()
                 .toList();
+        return loadPage(page, list);
     }
 
-    public List<String> readByKeyword(String type, String keyword) {
-        return wiseSayingList.reversed().stream()
+    public PageDto readByKeyword(String type, String keyword, int page) {
+        List<WiseSaying> list = wiseSayingList.reversed().stream()
                 .filter(i -> i.isContains(type, keyword))
-                .map(WiseSaying::toString)
                 .toList();
+        return loadPage(page, list);
     }
 
     public void save(int index, String content, String author) {
@@ -76,5 +78,15 @@ public class WiseSayingRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private PageDto loadPage(int page, List<WiseSaying> filteredList) {
+        List<String> pagedList = filteredList.stream()
+                .skip(PAGE_SIZE * (page - 1))
+                .limit(PAGE_SIZE)
+                .map(WiseSaying::toString)
+                .toList();
+        int pageCount = filteredList.size() / PAGE_SIZE + (filteredList.size() % PAGE_SIZE == 0 ? 0 : 1);
+        return new PageDto(page, pageCount, pagedList);
     }
 }
